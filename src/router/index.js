@@ -28,7 +28,11 @@ const router = createRouter({
       name: "Property",
       component: () => import("@/views/Property.vue")
     }, 
-    
+    {
+      path: '/Clock',  
+      name: "Clock",
+      component: () => import("@/views/Clock.vue")
+    }, 
   ]
 })
 

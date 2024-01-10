@@ -2,7 +2,7 @@
  * @Author: 何元鹏
  * @Date: 2023-12-13 11:12:02
  * @LastEditors: 何元鹏
- * @LastEditTime: 2024-01-09 13:14:54
+ * @LastEditTime: 2024-01-09 17:01:30
 -->
 <template>
  <div class="pick">
@@ -358,6 +358,7 @@ const initMap = (Cesium) => {
     // 动画，定位到初始位置的过渡时间，设置成0，就没有动画
     duration: 0
   });
+  viewer.scene.globe.enableLighting = true;
   // 隐藏版权
   viewer._cesiumWidget._creditContainer.style.display = "none";
 }

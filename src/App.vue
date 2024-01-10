@@ -2,7 +2,7 @@
  * @Author: 何元鹏
  * @Date: 2023-12-13 11:12:02
  * @LastEditors: 何元鹏
- * @LastEditTime: 2023-12-31 21:55:00
+ * @LastEditTime: 2024-01-09 15:01:57
 -->
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
@@ -20,6 +20,7 @@ import HelloWorld from './components/HelloWorld.vue'
         <RouterLink to="/Entity">Entity实体</RouterLink>
         <RouterLink to="/Pick">图元拾取和捕捉</RouterLink>
         <RouterLink to="/Property">Property机制</RouterLink>
+        <RouterLink to="/Clock">Clock时钟控制</RouterLink>
       </nav>
     </div>
   </header>

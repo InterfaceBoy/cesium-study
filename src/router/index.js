@@ -2,7 +2,7 @@
  * @Author: 何元鹏
  * @Date: 2023-12-13 11:12:02
  * @LastEditors: 何元鹏
- * @LastEditTime: 2024-01-02 11:09:58
+ * @LastEditTime: 2024-01-24 18:11:42
  */
 import { createRouter, createWebHistory } from 'vue-router' 
 
@@ -32,6 +32,11 @@ const router = createRouter({
       path: '/Clock',  
       name: "Clock",
       component: () => import("@/views/Clock.vue")
+    },
+    {
+      path: '/PopUps',  
+      name: "PopUps",
+      component: () => import("@/views/PopUps.vue")
     }, 
   ]
 })

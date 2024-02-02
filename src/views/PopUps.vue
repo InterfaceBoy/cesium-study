@@ -2,7 +2,7 @@
  * @Author: 何元鹏
  * @Date: 2023-12-13 11:12:02
  * @LastEditors: 何元鹏
- * @LastEditTime: 2024-01-25 13:35:18
+ * @LastEditTime: 2024-01-26 16:40:58
 -->
 <template>
  <div class="pick">
@@ -136,13 +136,11 @@ const initMap = (Cesium,one,popUp)  => {
 
         // 获取地图上的点位实体(entity)坐标
         const pick = viewer.scene.pick(click.position);
-        // 如果pick不是undefined，那么就是点到点位了
         if (pick && pick.id) {
-          // 定位到地图中心
           // this.locationToCenter(lon, lat);
           console.log(pick.id);
           const data = {
-            layerId: "layer1", // 英文，且唯一,内部entity会用得到
+            layerId: "layer1",
             lon: lon,
             lat: lat,
             element: "#one", // 弹框的唯一id
@@ -150,7 +148,6 @@ const initMap = (Cesium,one,popUp)  => {
           };
           console.log(one.value);
           one.value.style.zIndex = 9999
-         // this.$("#one").css("z-index", 9990);
            showDynamicLayer(viewer, data,one, () => { // 回调函数 改变弹窗的内容;
              
           }); 
@@ -165,12 +162,10 @@ const initMap = (Cesium,one,popUp)  => {
       
 }
  
- // 创建一个动态实体弹窗
- const    showDynamicLayer = (viewer, data,one, callback)=> {
+ const showDynamicLayer = (viewer, data,one, callback)=> {
       one.value.style.opacity = 0  
       callback();
 
-      // 添加div弹窗
       const lon = data.lon * 1, lat = data.lat * 1; 
       var divPosition = Cesium.Cartesian3.fromDegrees(lon, lat, data.boxHeightMax);
        one.value.style.opacity = 1
@@ -180,37 +175,33 @@ const initMap = (Cesium,one,popUp)  => {
       }, 500, () => {
          one.value.lastChild.fadeIn(500);
       }) 
-      // 当为true的时候，表示当element在地球背面会自动隐藏。默认为false，置为false，不会这样。但至少减轻判断计算压力
       creatHtmlElement(viewer, data.element, divPosition, [10, -0], true);
     }
 
-    // 创建一个 htmlElement元素 并且，其在earth背后会自动隐藏
   const  creatHtmlElement = (viewer, element, position, arr, flog)=> {
  
       var ele = document.querySelector(element);
-      var scratch = new Cesium.Cartesian2(); // cesium二维笛卡尔 笛卡尔二维坐标系就是我们熟知的而二维坐标系；三维也如此
+      var scratch = new Cesium.Cartesian2(); 
       var scene = viewer.scene, camera = viewer.camera;
       scene.preRender.addEventListener(() => {
         var canvasPosition = scene.cartesianToCanvasCoordinates(position, scratch); // cartesianToCanvasCoordinates 笛卡尔坐标（3维度）到画布坐标
         if (Cesium.defined(canvasPosition)) {
           ele.style.left = canvasPosition.x + arr[0] + "px";
           ele.style.top = canvasPosition.y + arr[1] + "px";
-          /* 此处进行判断**/// var px_position = Cesium.SceneTransforms.wgs84ToWindowCoordinates(scene, cartesian)
           if (flog && flog == true) {
-            var e = position, i = camera.position, n = scene.globe.ellipsoid.cartesianToCartographic(i).height
+            var e = position, 
+            i = camera.position, 
+            n = scene.globe.ellipsoid.cartesianToCartographic(i).height
             if (!(n += 1 * scene.globe.ellipsoid.maximumRadius, Cesium.Cartesian3.distance(i, e) > n)) {
-              // $(element).show()
               ele.style.display = "block";
             } else {
               ele.style.display = "none";
-              // $(element).hide()
             }
           }
         }
       });
     }
 
-    // 移除动态弹窗 为了方便 这里的移除 是真的移除，因此 到时是需要重建弹窗的doom的
    const removeDynamicLayer = (viewer, data)=> {
       document.querySelector(data.element).style.opacity = 0;
     }

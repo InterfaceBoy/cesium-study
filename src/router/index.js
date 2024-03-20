@@ -2,7 +2,7 @@
  * @Author: 何元鹏
  * @Date: 2023-12-13 11:12:02
  * @LastEditors: 何元鹏
- * @LastEditTime: 2024-01-24 18:11:42
+ * @LastEditTime: 2024-03-12 15:04:43
  */
 import { createRouter, createWebHistory } from 'vue-router' 
 
@@ -38,6 +38,16 @@ const router = createRouter({
       name: "PopUps",
       component: () => import("@/views/PopUps.vue")
     }, 
+    {
+      path: '/QueryData',  
+      name: "QueryData",
+      component: () => import("@/views/QueryData.vue")
+    },
+    {
+      path: '/handler',  
+      name: "handler",
+      component: () => import("@/views/handler.vue")
+    }
   ]
 })
 

@@ -2,32 +2,40 @@
  * @Author: 何元鹏
  * @Date: 2023-12-13 11:12:02
  * @LastEditors: 何元鹏
- * @LastEditTime: 2024-03-14 16:55:23
+ * @LastEditTime: 2024-03-12 15:48:37
 -->
 <template>
  <div class="pick">
     <div id="cesiumContainer"></div>
     <section class="mapList">
-      <header class="mapList-header">数据查询和加载</header>
+      <header class="mapList-header">绘制点线面</header>
       <article class="mapList-center">
         <div class="mapList-center-list">
-          <el-button type="primary" @click="handelBingMapShow">加载Bing切片</el-button>
-          <el-button type="primary" @click="handelArcGisMapShow">加载ArcGis切片</el-button> 
+          <el-button type="primary" @click="handelSuperMapShow('point')">绘制点</el-button>
+          <el-button type="primary" @click="handelSuperMapShow('line')">绘制线</el-button> 
         </div> 
          <div class="mapList-center-list">
-          <el-button type="primary" @click="handelMapHide">隐藏</el-button> 
+          <el-button type="primary" @click="handelSuperMapShow('polygon')">绘制面</el-button>
+          <el-button type="primary" @click="handelSuperMapShow('marker')">绘制marker</el-button> 
+        </div>
+          <div class="mapList-center-list">
+          <el-button type="primary" @click="handelSuperMapShow('box')">绘制box</el-button> 
+        </div>
+        <div class="mapList-center-list">  
+          <el-button type="primary" @click="handelSuperMapHide()">清除</el-button>
         </div> 
       </article>
     </section>
   </div>
 </template>
 <script> 
-import { onMounted } from "vue"; 
+import { onMounted,ref } from "vue"; 
 const Cesium = window.Cesium; 
 export default {
  name: "CesiumProperty", 
  props: {},
  setup() {
+   const drawer = ref()
    onMounted(() => {
      try {
        initMap(Cesium);
@@ -39,49 +47,42 @@ export default {
      * @description: 加载Box
      * @return {*}
      */
-    const handelArcGisMapShow = ()=>{ 
-       const layer  =  viewer.imageryLayers.addImageryProvider(new Cesium.BingMapsImageryProvider({
-            url : 'https://dev.virtualearth.net',
-            key : 'AgA7VqHTXS6BPr9ltM0w8bP1oGbbatoj2n6v0WSGIIyI-oCKgS9B-kADWsqpNDbW',
-            mapStyle : Cesium.BingMapsStyle.AERIAL, 
-        }));
-        console.log(layer);
-        // 获取场景中的原始体
-        const primitives = viewer.scene.primitives;
-        console.log(primitives);
-        /* // 获取图层集合
-        const imageryLayers = viewer.imageryLayers;
-        imageryLayers.add(new Cesium.ImageryLayer(UrlTemplate));
-        // 将图像转成图层
-        const UrlTemplate = new Cesium.UrlTemplateImageryProvider({
-          url:
-            "http://webst02.is.autonavi.com/appmaptile?x={x}&y={y}&z={z}&lang=zh_cn&size=1&scale=1&style=8"
-        }); */
-        
-        
+    const handelSuperMapShow = (type)=>{ 
+      const modeData = {
+        point: Cesium.DrawMode.Point,
+        line: Cesium.DrawMode.Line,
+        polygon: Cesium.DrawMode.Polygon,
+        marker: Cesium.DrawMode.Marker,
+        box: Cesium.DrawMode.Box
+      }
+      const ClampModeData = {
+        ground: Cesium.ClampMode.Ground,    // "贴地模式"
+        raster: Cesium.ClampMode.Raster,    // "栅格化模式"
+        model: Cesium.ClampMode.S3mModel,   // "贴对象模式"
+        space: Cesium.ClampMode.Space,      // "空间模式"
+      }
+      const drawerHandler = new Cesium.DrawHandler(window.viewer, modeData[type], ClampModeData.space)
+      drawer.value = drawerHandler
+      /* 监听handler是否激活事件 */
+      drawerHandler.activeEvt.addEventListener((isActive) => {
+        console.log('是否激活事件:',isActive);
+      });
+      /* 监听handler移动事件,返回鼠标在屏幕的位置 */
+      drawerHandler.movingEvt.addEventListener((position) => {
+         console.log('屏幕的位置:',position);
+      })
+      /* 监听绘制是否完成,获取绘制结果 */
+      drawerHandler.drawEvt.addEventListener((result) => {
+        console.log('绘制结果:',result);
+      })
+      /* 激活 */
+      drawerHandler.activate()
     }
-    const handelBingMapShow = ()=>{
-        // 添加图层  
-        var esri = new Cesium.ArcGisMapServerImageryProvider({
-          url : 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer'
-        });
-        const layer = viewer.imageryLayers.addImageryProvider(esri)
-        console.log(layer);
-        // 获取场景中的原始体
-        const primitives = viewer.scene.primitives;
-        console.log(primitives);
-    }
-    const handelMapHide =()=>{
-        // 获取场景中的原始体
-        console.log(viewer.imageryLayers._layers);
-        const primitives = viewer.scene.primitives;
-        console.log(primitives);
-        const layerData = new Cesium.ImageryLayerCollection()
-        console.log(layerData);
-        
+    const handelSuperMapHide=()=>{
+      drawer.value.clear()
     }
     return {
-      handelArcGisMapShow,handelBingMapShow,handelMapHide
+      handelSuperMapShow,handelSuperMapHide
     }
  },
 };
@@ -113,10 +114,10 @@ const initMap = (Cesium)  => {
         alpha: true
       }
     },
-   /*  imageryProvider: new Cesium.UrlTemplateImageryProvider({
+    imageryProvider: new Cesium.UrlTemplateImageryProvider({
       url:
         "https://webst02.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}"
-    }) */
+    })
   });
   window.viewer = viewer 
   // 隐藏版权
@@ -171,5 +172,4 @@ const initMap = (Cesium)  => {
       height: 3rem;
     }
 }
-
 </style> 

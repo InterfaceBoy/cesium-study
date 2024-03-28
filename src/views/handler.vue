@@ -2,7 +2,7 @@
  * @Author: 何元鹏
  * @Date: 2023-12-13 11:12:02
  * @LastEditors: 何元鹏
- * @LastEditTime: 2024-03-12 15:48:37
+ * @LastEditTime: 2024-03-25 11:20:24
 -->
 <template>
  <div class="pick">
@@ -108,7 +108,7 @@ const initMap = (Cesium)  => {
     fullscreenElement: document.body, // 全屏时渲染的HTML元素 暂时没发现用处
     skyAtmosphere: false,// 关闭地球光环
     requestRenderMode: true, // 启用请求渲染模式
-    orderIndependentTranslucency: false, // 去掉大气层黑圈
+    orderIndependentTranslucency: false, // 去掉大气层黑圈˜
     contextOptions: {
       webgl: {
         alpha: true

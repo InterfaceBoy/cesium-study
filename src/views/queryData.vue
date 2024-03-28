@@ -2,7 +2,7 @@
  * @Author: 何元鹏
  * @Date: 2023-12-13 11:12:02
  * @LastEditors: 何元鹏
- * @LastEditTime: 2024-03-14 16:55:23
+ * @LastEditTime: 2024-03-22 16:48:46
 -->
 <template>
  <div class="pick">
@@ -36,7 +36,7 @@ export default {
      }
    });
      /**
-     * @description: 加载Box
+     * @description: 加载Bing切片
      * @return {*}
      */
     const handelArcGisMapShow = ()=>{ 
@@ -45,40 +45,26 @@ export default {
             key : 'AgA7VqHTXS6BPr9ltM0w8bP1oGbbatoj2n6v0WSGIIyI-oCKgS9B-kADWsqpNDbW',
             mapStyle : Cesium.BingMapsStyle.AERIAL, 
         }));
-        console.log(layer);
-        // 获取场景中的原始体
-        const primitives = viewer.scene.primitives;
-        console.log(primitives);
-        /* // 获取图层集合
-        const imageryLayers = viewer.imageryLayers;
-        imageryLayers.add(new Cesium.ImageryLayer(UrlTemplate));
-        // 将图像转成图层
-        const UrlTemplate = new Cesium.UrlTemplateImageryProvider({
-          url:
-            "http://webst02.is.autonavi.com/appmaptile?x={x}&y={y}&z={z}&lang=zh_cn&size=1&scale=1&style=8"
-        }); */
-        
-        
     }
-    const handelBingMapShow = ()=>{
-        // 添加图层  
+    /**
+     * @description: 加载ARC
+     * @return {*}
+     */
+    const handelBingMapShow = ()=>{ 
         var esri = new Cesium.ArcGisMapServerImageryProvider({
           url : 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer'
         });
         const layer = viewer.imageryLayers.addImageryProvider(esri)
-        console.log(layer);
-        // 获取场景中的原始体
-        const primitives = viewer.scene.primitives;
-        console.log(primitives);
     }
     const handelMapHide =()=>{
-        // 获取场景中的原始体
+        // 获取场景中的图层
         console.log(viewer.imageryLayers._layers);
-        const primitives = viewer.scene.primitives;
-        console.log(primitives);
-        const layerData = new Cesium.ImageryLayerCollection()
-        console.log(layerData);
-        
+        // _isBaseLayer 低图层
+        // _layerIndex  当前图层所在层级
+        viewer.imageryLayers._layers.forEach(item => {
+        if(!item._isBaseLayer && item._layerIndex!==0)
+          item.show = false
+        });
     }
     return {
       handelArcGisMapShow,handelBingMapShow,handelMapHide

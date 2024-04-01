@@ -12,8 +12,7 @@
     "commit": "git-cz"
   },
   "dependencies": {
-   
-    "element-plus": "^2.4.3",
+    "element-plus": "^2.4.3", 
     "sass": "^1.69.5",
     "vue": "^3.3.10",
     "vue-router": "^4.2.5"
@@ -23,8 +22,9 @@
     "@supermap/iclient-ol": "^11.0.1",
     "@vitejs/plugin-vue": "^4.5.1",
     "@vue/eslint-config-prettier": "^8.0.0",
-    "cz-git": "^1.9.1",
     "commitizen": "^4.3.0",
+    "commitlint-config-cz": "^0.13.3",
+    "cz-git": "^1.9.1",
     "eslint": "^8.49.0",
     "eslint-plugin-vue": "^9.17.0",
     "prettier": "^3.0.3",
@@ -36,10 +36,22 @@
     "stylelint-prettier": "1.2.0",
     "vite": "^5.0.5"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-push": "validate-branch-name && yarn test:unit"
+    }
+  },
+  "validate-branch-name": {
+    "pattern": "^(master|dev|release)$|^(feat|(?:hot)?fix|refact|prefer|style|chore)(-[a-zA-Z]+){2,3}(-\\d{8})?$",
+    "errorMsg": "分支命名不规范"
+  },
   "config": {
     "commitizen": {
       "path": "node_modules/cz-git",
-      "useEmoji": true
+      "useEmoji": true,
+      "czConfig": "./.cz-config.cjs"
     }
   }
 }

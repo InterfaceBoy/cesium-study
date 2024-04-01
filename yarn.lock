@@ -2156,6 +2156,11 @@ anymatch@~3.1.2:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
 
+app-root-path@~3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/app-root-path/-/app-root-path-3.0.0.tgz#210b6f43873227e18a4b810a032283311555d5ad"
+  integrity sha512-qMcx+Gy2UZynHjOHOIXPNvpf+9cjvk3cWrBBK7zg4gH9+clobJRb9NGzcT7mQTcV/6Gm/1WelUtqxVXnNlrwcw==
+
 argparse@^2.0.1:
   version "2.0.1"
   resolved "https://registry.npmmirror.com/argparse/-/argparse-2.0.1.tgz#246f50f3ca78a3240f6c997e8a9bd1eac49e4b38"
@@ -2457,6 +2462,14 @@ commitizen@^4.0.3, commitizen@^4.3.0:
     minimist "1.2.7"
     strip-bom "4.0.0"
     strip-json-comments "3.1.1"
+
+commitlint-config-cz@^0.13.3:
+  version "0.13.3"
+  resolved "https://registry.yarnpkg.com/commitlint-config-cz/-/commitlint-config-cz-0.13.3.tgz#a3e00bf2b98626f98a7e92c142ce081b1d6d179b"
+  integrity sha512-6LmCvGiFDTVSmLF0mzVVp1etMM8lAqLmPRlU7Oml1J8J9oOLadf+2g4uMTchdxOvvYLgll99SESFUHgmc6oATA==
+  dependencies:
+    app-root-path "~3.0.0"
+    lodash.clonedeep "~4.5.0"
 
 concat-map@0.0.1:
   version "0.0.1"
@@ -3837,7 +3850,7 @@ lodash-unified@^1.0.2:
   resolved "https://registry.npmmirror.com/lodash-unified/-/lodash-unified-1.0.3.tgz#80b1eac10ed2eb02ed189f08614a29c27d07c894"
   integrity sha512-WK9qSozxXOD7ZJQlpSqOT+om2ZfcT4yO+03FuzAHD0wF6S0l0090LRPDx3vhTTLZ8cFKpBn+IOcVXK6qOcIlfQ==
 
-lodash.clonedeep@^4.5.0:
+lodash.clonedeep@^4.5.0, lodash.clonedeep@~4.5.0:
   version "4.5.0"
   resolved "https://registry.npmmirror.com/lodash.clonedeep/-/lodash.clonedeep-4.5.0.tgz#e23f3f9c4f8fbdde872529c1071857a086e5ccef"
   integrity sha512-H5ZhCF25riFd9uB5UCkVKo61m3S/xZk1x4wA6yp/L3RFP6Z/eHH1ymQcGLo7J3GMPfm0V/7m1tryHuGVxpqEBQ==
